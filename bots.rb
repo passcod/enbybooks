@@ -1,6 +1,13 @@
 #!/usr/bin/env ruby
 
 require 'twitter_ebooks'
+require 'typhoeus'
+
+class Ebooks::Model
+  def self.load_str(str)
+    Marshal.load(str)
+  end
+end
 
 # This is an example bot definition with event handlers commented out
 # You can define as many of these as you like; they will run simultaneously
@@ -12,7 +19,8 @@ Ebooks::Bot.new("enbybooks") do |bot|
   bot.consumer_secret = ENV['TWITTER_SECRET']
   bot.oauth_token = ENV['OAUTH_TOKEN']
   bot.oauth_token_secret = ENV['OAUTH_SECRET']
-  model = Ebooks::Model.load("model/enbygorawr.model")
+  modr = Typhoeus.get(ENV['MODEL_URL'])
+  model = Ebooks::Model.load_str(modr.body)
 
   bot.on_message do |dm|
     # Reply to a DM
