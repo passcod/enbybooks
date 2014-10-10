@@ -1,1 +1,1 @@
-worker: bundle exec ruby run.rb start
+web: bundle exec rackup -p $PORT
