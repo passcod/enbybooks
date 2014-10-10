@@ -5,13 +5,13 @@ require 'twitter_ebooks'
 # This is an example bot definition with event handlers commented out
 # You can define as many of these as you like; they will run simultaneously
 
-Ebooks::Bot.new("akibooks") do |bot|
+Ebooks::Bot.new("enbybooks") do |bot|
   # Consumer details come from registering an app at https://dev.twitter.com/
   # OAuth details can be fetched with https://github.com/marcel/twurl
-  bot.consumer_key = "" # Your app consumer key
-  bot.consumer_secret = "" # Your app consumer secret
-  bot.oauth_token = "" # Token connecting the app to this account
-  bot.oauth_token_secret = "" # Secret connecting the app to this account
+  bot.consumer_key = ENV['TWITTER_KEY']
+  bot.consumer_secret = ENV['TWITTER_SECRET']
+  bot.oauth_token = ENV['OAUTH_TOKEN']
+  bot.oauth_token_secret = ENV['OAUTH_SECRET']
 
   bot.on_message do |dm|
     # Reply to a DM
@@ -33,7 +33,7 @@ Ebooks::Bot.new("akibooks") do |bot|
     # bot.reply(tweet, meta[:reply_prefix] + "nice tweet")
   end
 
-  bot.scheduler.every '24h' do
+  bot.scheduler.every '1h' do
     # Tweet something every 24 hours
     # See https://github.com/jmettraux/rufus-scheduler
     # bot.tweet("hi")
