@@ -35,7 +35,9 @@ Ebooks::Bot.new("enbybooks") do |bot|
   bot.on_mention do |tweet, meta|
     # Reply to a mention
     # bot.reply(tweet, meta[:reply_prefix] + "oh hullo")
-    bot.reply tweet, meta[:reply_prefix] + model.make_response(tweet[:text], 139 - meta[:reply_prefix].length)
+    if Random.rand > 0.5
+      bot.reply tweet, meta[:reply_prefix] + model.make_response(tweet[:text], 139 - meta[:reply_prefix].length)
+    end
   end
 
   bot.on_timeline do |tweet, meta|
