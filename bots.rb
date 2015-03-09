@@ -8,10 +8,17 @@ class EnbyBot < Ebooks::Bot
   end
 
   def on_startup
-    scheduler.every '1h' do
-      # Tweet something every 24 hours
-      # See https://github.com/jmettraux/rufus-scheduler
-      # bot.tweet("hi")
+    t = self.twitter
+    u = self.username
+    scheduler.every '5m' do
+      last_tweet = t.user_timeline(u,
+        exclude_replies: true, include_rts: false).first
+      if !last_tweet.nil?
+        time_now = Time.now
+        time_then = last_tweet.created_at
+        hours_ago = (time_now - time_then) / (60 * 60)
+        return if hours_ago < 1 # don't tweet
+      end
       tweet @model.make_statement(140)
     end
   end
