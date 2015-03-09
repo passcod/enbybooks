@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'twitter_ebooks'
 require_relative 'bots'
 
 class KeepAlive < Sinatra::Base

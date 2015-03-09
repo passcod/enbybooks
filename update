@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+ebooks archive alxce_nz corpus/alxce_nz.json
+./megacorpus
+ebooks consume corpus/enbybooks.json
+git add corpus model
+git commit -m "Corpus update $(date +'%Y-%m-%d')"
