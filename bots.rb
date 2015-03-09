@@ -4,7 +4,7 @@ class EnbyBot < Ebooks::Bot
     # OAuth details can be fetched with https://github.com/marcel/twurl
     self.consumer_key = ENV['TWITTER_KEY']
     self.consumer_secret = ENV['TWITTER_SECRET']
-    model = Ebooks::Model.load('model/enbybooks.model')
+    @model = Ebooks::Model.load('model/enbybooks.model')
   end
 
   def on_startup
@@ -12,7 +12,7 @@ class EnbyBot < Ebooks::Bot
       # Tweet something every 24 hours
       # See https://github.com/jmettraux/rufus-scheduler
       # bot.tweet("hi")
-      tweet model.make_statement(140)
+      tweet @model.make_statement(140)
     end
   end
 
@@ -28,7 +28,7 @@ class EnbyBot < Ebooks::Bot
 
   def on_mention(tweet)
     # Reply to a mention
-    reply tweet, meta(tweet).reply_prefix + model.make_response(tweet.text, 139 - meta(tweet).reply_prefix.length)
+    reply tweet, meta(tweet).reply_prefix + @model.make_response(tweet.text, 139 - meta(tweet).reply_prefix.length)
   end
 
   def on_timeline(tweet)
