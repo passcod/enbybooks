@@ -1,3 +1,5 @@
+require 'after_the_deadline'
+
 class EnbyBot < Ebooks::Bot
   def configure
     # Consumer details come from registering an app at https://dev.twitter.com/
@@ -5,6 +7,7 @@ class EnbyBot < Ebooks::Bot
     self.consumer_key = ENV['TWITTER_KEY']
     self.consumer_secret = ENV['TWITTER_SECRET']
     @model = Ebooks::Model.load('model/enbybooks.model')
+    AfterTheDeadline(nil, ['Passive voice'])
   end
 
   def on_startup
@@ -19,7 +22,18 @@ class EnbyBot < Ebooks::Bot
         hours_ago = (time_now - time_then) / (60 * 60)
         return if hours_ago < 1 # don't tweet
       end
-      tweet @model.make_statement(140)
+
+      # only tweet things that look sufficiently correct
+      round = 0
+      phrase = ''
+      loop do
+        phrase = @model.make_statement(140)
+        round += 1
+        break if round > 5
+        break if AfterTheDeadline.check(phrase.gsub(' i ', ' I ')).length < 2
+      end
+
+      tweet phrase
     end
   end
 
